@@ -1,34 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/23 16:46:54 by zel-kass          #+#    #+#             */
-/*   Updated: 2022/11/30 17:41:27 by zel-kass         ###   ########.fr       */
+/*   Created: 2022/11/30 15:13:56 by zel-kass          #+#    #+#             */
+/*   Updated: 2022/11/30 17:42:05 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#include "philo.h"
 
-#include <pthread.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/time.h>
-
-typedef struct s_philo
+t_philo	*get_philo(char **argv)
 {
-	long	p_nb;
-	long	t_td;
-	long	t_te;
-	long	t_ts;
-	long	n_eat;
-}			t_philo;
+	t_philo	*philo;
 
-long	ft_atol(char *str);
-t_philo	*get_philo(char **argv);
-
-#endif
+	philo = malloc(sizeof(t_philo));
+	if (!philo)
+		return (NULL);
+	philo->p_nb = ft_atol(argv[1]);
+	philo->t_td = ft_atol(argv[2]);
+	philo->t_te = ft_atol(argv[3]);
+	philo->t_ts = ft_atol(argv[4]);
+	if (argv[5])
+		philo->n_eat = ft_atol(argv[5]);
+	return (philo);
+}

@@ -1,23 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/23 16:42:33 by zel-kass          #+#    #+#             */
-/*   Updated: 2022/11/30 17:43:42 by zel-kass         ###   ########.fr       */
+/*   Created: 2022/11/30 15:32:11 by zel-kass          #+#    #+#             */
+/*   Updated: 2022/11/30 15:34:37 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int main(int argc, char **argv)
+long	ft_atol(char *str)
 {
-	t_philo	*philo;
+	int		i;
+	long	res;
+	int		sign;
 
-	if (argc > 6 || argc < 5)
-		return (printf("Wrong arguments number\n"), 0);
-	philo = get_philo(argv);
-	return (0);
+	i = 0;
+	sign = 1;
+	res = 0;
+	while ((str[i] > 9 && str[i] < 13) || (str[i] == ' '))
+		i++;
+	while (str[i] == '+' || str[i] == '-')
+	{
+		if (str[i] == '-')
+			sign *= -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		res = res * 10 + (str[i] - 48);
+		if (res * sign < -2147483648 || res * sign > 2147483647)
+			exit(EXIT_FAILURE);
+		i++;
+	}
+	return (res * sign);
 }
