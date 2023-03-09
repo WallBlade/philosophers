@@ -1,4 +1,4 @@
-SRCS 	=	src/main.c src/utils.c src/parsing.c \
+SRCS 	=	$(wildcard src/*.c) \
 
 OBJ		=	$(SRCS:.c=.o)
 

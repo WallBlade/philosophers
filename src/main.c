@@ -6,7 +6,7 @@
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 16:42:33 by zel-kass          #+#    #+#             */
-/*   Updated: 2022/11/30 17:43:42 by zel-kass         ###   ########.fr       */
+/*   Updated: 2023/01/30 17:58:18 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 int main(int argc, char **argv)
 {
-	t_philo	*philo;
+	t_global	*global;
 
 	if (argc > 6 || argc < 5)
 		return (printf("Wrong arguments number\n"), 0);
-	philo = get_philo(argv);
+	global = get_global(argv);
+	printf("nb = %ld\ttd = %ld\t te = %ld\tts = %ld\teat = %ld\n", global->p_nb, global->t_td, global->t_te, global->t_ts, global->n_eat);
 	return (0);
 }

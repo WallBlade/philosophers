@@ -6,24 +6,36 @@
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 15:13:56 by zel-kass          #+#    #+#             */
-/*   Updated: 2022/11/30 17:42:05 by zel-kass         ###   ########.fr       */
+/*   Updated: 2023/03/09 11:59:54 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_philo	*get_philo(char **argv)
+int     ft_isdigit(char *str)
 {
-	t_philo	*philo;
+	int	i;
 
-	philo = malloc(sizeof(t_philo));
-	if (!philo)
-		return (NULL);
-	philo->p_nb = ft_atol(argv[1]);
-	philo->t_td = ft_atol(argv[2]);
-	philo->t_te = ft_atol(argv[3]);
-	philo->t_ts = ft_atol(argv[4]);
-	if (argv[5])
-		philo->n_eat = ft_atol(argv[5]);
-	return (philo);
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] < '0' && str[i] > '9')
+				return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	check_args(char **argv)
+{
+	int	i;
+
+	i = 0;
+	while (argv[i])
+	{
+		if (!ft_isdigit(argv[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }
