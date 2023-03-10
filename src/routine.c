@@ -12,8 +12,36 @@
 
 #include "philo.h"
 
-// void    *routine()
-// {
-//     printf("routine test\n");
-//     sleep(3);
-// }
+void	take_fork(t_philo *philo)
+{
+	printf("philo %d has taken a fork\n", philo->id);
+}
+
+void	eating(t_philo *philo)
+{
+	printf("philo %d is eating\n", philo->id);
+}
+
+void	sleeping(t_philo *philo)
+{
+	printf("philo %d is sleeping\n", philo->id);
+}
+
+void	thinking(t_philo *philo)
+{
+	printf("philo %d is thinking\n", philo->id);
+}
+
+void    *routine(void *ptr)
+{
+    t_philo *philo;
+
+    philo = ptr;
+    while (1)
+    {
+		take_fork(philo);
+		eating(philo);
+		sleeping(philo);
+		thinking(philo);
+    }
+}

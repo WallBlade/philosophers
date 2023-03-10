@@ -6,7 +6,7 @@
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 16:46:54 by zel-kass          #+#    #+#             */
-/*   Updated: 2023/03/09 11:59:25 by zel-kass         ###   ########.fr       */
+/*   Updated: 2023/03/10 18:48:40 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,17 @@
 
 typedef struct s_global
 {
-	long	p_nb;
-	long	t_td;
-	long	t_te;
-	long	t_ts;
-	long	n_eat;
-	t_philo	*philo;
+	long	count;
+	long	die;
+	long	eat;
+	long	sleep;
+	long	meals;
 }			t_global;
-
-typedef struct s_data
-{
-	int			id;
-	int			n_eat;
-}			t_data;
 
 typedef struct s_philo
 {
-	t_data		data;
+	int			id;
+	t_global	*global;
 	pthread_t	thread;
 }			t_philo;
 
@@ -45,8 +39,8 @@ typedef struct s_philo
 //# 						INIT 						#//
 //#######################################################//
 
-long		ft_atol(char *str);
 t_global	*get_global(char **argv);
+t_philo		*init_philo(t_global *global);
 
 //#######################################################//
 //# 					   PARSING						#//
@@ -59,10 +53,12 @@ int		check_args(char **argv);
 //# 					   ROUTINE						#//
 //#######################################################//
 
-void		*routine();
+void		*routine(void *ptr);
 
 //#######################################################//
 //# 						UTILS						#//
 //#######################################################//
+
+long		ft_atol(char *str);
 
 #endif

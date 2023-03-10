@@ -19,23 +19,33 @@ t_global	*get_global(char **argv)
 	global = malloc(sizeof(t_global));
 	if (!global || !check_args(argv))
 		return (NULL);
-	global->p_nb = ft_atol(argv[1]);
-	global->t_td = ft_atol(argv[2]);
-	global->t_te = ft_atol(argv[3]);
-	global->t_ts = ft_atol(argv[4]);
+	global->count = ft_atol(argv[1]);
+	global->die = ft_atol(argv[2]);
+	global->eat = ft_atol(argv[3]);
+	global->sleep = ft_atol(argv[4]);
 	if (argv[5])
-		global->n_eat = ft_atol(argv[5]);
+		global->meals = ft_atol(argv[5]);
 	return (global);
 }
 
-void    init_threads(t_philo *philo, t_data *global)
+t_philo	*init_philo(t_global *global)
 {
-    int i;
+    int 	i;
+	int		index;
+	t_philo	*philo;
 
-    i = 0; 
-    while (i < global->p_nb)
+    i = global->count;
+	index = 0;
+	philo = malloc(sizeof(t_philo) * i);
+	if (!philo)
+		return (NULL);
+    while (i > 0)
     {
-        pthread_create(philo.data[i]->thread, NULL, routine, philo->data[i]);
-        i++;
+		philo[index].id = index + 1;
+		philo[index].global = global;
+        pthread_create(&philo[index].thread, NULL, &routine, &philo[index]);
+		index++;
+        i--;
     }
+	return(philo);
 }
