@@ -6,25 +6,25 @@
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 16:42:33 by zel-kass          #+#    #+#             */
-/*   Updated: 2023/03/10 18:56:38 by zel-kass         ###   ########.fr       */
+/*   Updated: 2023/03/11 18:02:50 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	waitforme(t_global *global, t_philo *philo)
+void	waitforme(t_philo *philo, int count)
 {
 	int	i;
 
 	i = 0;
-	while (i < global->count)
+	while (i < count)
 	{
 		pthread_join(philo[i].thread, NULL);
 		i++;
 	}
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_global	*global;
 	t_philo		*philo;
@@ -33,6 +33,6 @@ int main(int argc, char **argv)
 		return (printf("Wrong arguments number\n"), 0);
 	global = get_global(argv);
 	philo = init_philo(global);
-	waitforme(global, philo);
+	waitforme(philo, global->count);
 	return (0);
 }

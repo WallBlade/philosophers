@@ -14,34 +14,67 @@
 
 void	take_fork(t_philo *philo)
 {
-	printf("philo %d has taken a fork\n", philo->id);
+	int	i;
+
+	i = philo->id;
+	if (i % 2 && !philo->has_eaten)
+	{
+		pthread_mutex_lock(&philo->fork);
+		pthread_mutex_lock(&philo[i + 1].fork);
+		print_status(philo, "has taken a fork");
+		eating(philo);
+	}
+	else
+	{
+		pthread_mutex_lock(&philo->fork);
+		pthread_mutex_lock(&philo[i - 1].fork);
+		print_status(philo, "has taken a fork");
+		eating(philo);
+	}
 }
 
 void	eating(t_philo *philo)
 {
-	printf("philo %d is eating\n", philo->id);
+	int	i;
+
+	i = philo->id;
+	print_status(philo, "is eating");
+	usleep(philo->global->eat);
+	if (i % 2)
+	{
+		pthread_mutex_unlock(&philo->fork);
+		pthread_mutex_unlock(&philo[i + 1].fork);
+	}
+	else
+	{
+		pthread_mutex_unlock(&philo->fork);
+		pthread_mutex_unlock(&philo[i - 1].fork);
+	}
+	philo->has_eaten = 1;
 }
 
 void	sleeping(t_philo *philo)
 {
-	printf("philo %d is sleeping\n", philo->id);
+	print_status(philo, "is sleeping");
+	usleep(philo->global->sleep);
+	philo->has_eaten = 0;
 }
 
 void	thinking(t_philo *philo)
 {
-	printf("philo %d is thinking\n", philo->id);
+	print_status(philo, "is thinking");
+	usleep(philo->global->die);
 }
 
-void    *routine(void *ptr)
+void	*routine(void *ptr)
 {
-    t_philo *philo;
+	t_philo	*philo;
 
-    philo = ptr;
-    while (1)
-    {
+	philo = ptr;
+	while (1)
+	{
 		take_fork(philo);
-		eating(philo);
 		sleeping(philo);
 		thinking(philo);
-    }
+	}
 }

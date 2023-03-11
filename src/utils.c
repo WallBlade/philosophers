@@ -6,35 +6,34 @@
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 15:32:11 by zel-kass          #+#    #+#             */
-/*   Updated: 2022/11/30 15:34:37 by zel-kass         ###   ########.fr       */
+/*   Updated: 2023/03/11 18:23:35 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long	ft_atol(char *str)
+long	timer(void)
 {
-	int		i;
-	long	res;
-	int		sign;
+	struct timeval	time;
+	long			current;
+	
+	gettimeofday(&time, NULL);
+	current = time.tv_sec * 1000 + time.tv_usec / 1000;
+	return (current);
+}
 
-	i = 0;
-	sign = 1;
-	res = 0;
-	while ((str[i] > 9 && str[i] < 13) || (str[i] == ' '))
-		i++;
-	while (str[i] == '+' || str[i] == '-')
-	{
-		if (str[i] == '-')
-			sign *= -1;
-		i++;
-	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		res = res * 10 + (str[i] - 48);
-		if (res * sign < -2147483648 || res * sign > 2147483647)
-			exit(EXIT_FAILURE);
-		i++;
-	}
-	return (res * sign);
+// int	has_eaten(t_philo *philo)
+// {
+// 	long	time;
+	
+// 	time = timer();
+// 	if (philo->global->eat)
+// }
+
+void	print_status(t_philo *philo, char *str)
+{
+	pthread_mutex_lock(&philo->global->msg);
+	printf("philo %d ", philo->id);
+	printf("%s\n", str);
+	pthread_mutex_unlock(&philo->global->msg);
 }

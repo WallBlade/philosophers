@@ -6,33 +6,36 @@
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 16:46:54 by zel-kass          #+#    #+#             */
-/*   Updated: 2023/03/10 18:48:40 by zel-kass         ###   ########.fr       */
+/*   Updated: 2023/03/11 18:20:47 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-#include <pthread.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/time.h>
+# include <pthread.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <sys/time.h>
 
 typedef struct s_global
 {
-	long	count;
-	long	die;
-	long	eat;
-	long	sleep;
-	long	meals;
+	long			count;
+	long			die;
+	long			eat;
+	long			sleep;
+	long			meals;
+	pthread_mutex_t	msg;
 }			t_global;
 
 typedef struct s_philo
 {
-	int			id;
-	t_global	*global;
-	pthread_t	thread;
+	int				id;
+	int				has_eaten;
+	t_global		*global;
+	pthread_mutex_t	fork;
+	pthread_t		thread;
 }			t_philo;
 
 //#######################################################//
@@ -46,19 +49,24 @@ t_philo		*init_philo(t_global *global);
 //# 					   PARSING						#//
 //#######################################################//
 
-int		ft_isdigit(char *str);
-int		check_args(char **argv);
+long		ft_atol(char *str);
+int			ft_isdigit(char *str);
+int			check_args(char **argv);
 
 //#######################################################//
 //# 					   ROUTINE						#//
 //#######################################################//
 
+void		take_fork(t_philo *philo);
+void		eating(t_philo *philo);
+void		sleeping(t_philo *philo);
+void		thinking(t_philo *philo);
 void		*routine(void *ptr);
 
 //#######################################################//
 //# 						UTILS						#//
 //#######################################################//
 
-long		ft_atol(char *str);
+void	print_status(t_philo *philo, char *str);
 
 #endif
