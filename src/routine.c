@@ -24,7 +24,7 @@ void	take_fork(t_philo *philo)
 		print_status(philo, "has taken a fork");
 		eating(philo);
 	}
-	else
+	else if (i % 3 && !philo->has_eaten)
 	{
 		pthread_mutex_lock(&philo->fork);
 		pthread_mutex_lock(&philo[i - 1].fork);
@@ -71,6 +71,11 @@ void	*routine(void *ptr)
 	t_philo	*philo;
 
 	philo = ptr;
+	if (philo->id % 2)
+	{
+		printf("id = %d\n", philo->id);
+		usleep(200);
+	}
 	while (1)
 	{
 		take_fork(philo);

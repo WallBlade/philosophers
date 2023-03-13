@@ -6,7 +6,7 @@
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 16:42:33 by zel-kass          #+#    #+#             */
-/*   Updated: 2023/03/11 18:02:50 by zel-kass         ###   ########.fr       */
+/*   Updated: 2023/03/13 13:54:36 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,6 @@ int	main(int argc, char **argv)
 	global = get_global(argv);
 	philo = init_philo(global);
 	waitforme(philo, global->count);
+	free(global);
 	return (0);
 }

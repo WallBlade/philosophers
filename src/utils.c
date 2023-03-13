@@ -6,11 +6,18 @@
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 15:32:11 by zel-kass          #+#    #+#             */
-/*   Updated: 2023/03/11 18:23:35 by zel-kass         ###   ########.fr       */
+/*   Updated: 2023/03/13 13:37:45 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	clean_exit(char *str, void *ptr)
+{
+	printf("%s", str);
+	free(ptr);
+	exit(EXIT_FAILURE);
+}
 
 long	timer(void)
 {

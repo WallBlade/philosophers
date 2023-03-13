@@ -20,6 +20,8 @@ t_global	*get_global(char **argv)
 	if (!global || !check_args(argv))
 		return (NULL);
 	global->count = ft_atol(argv[1]);
+	if (global->count < 1)
+		clean_exit("No one's arround the table\n", global);
 	global->die = ft_atol(argv[2]);
 	global->eat = ft_atol(argv[3]);
 	global->sleep = ft_atol(argv[4]);
@@ -46,7 +48,7 @@ t_philo	*init_philo(t_global *global)
 	{
 		philo[index].id = index + 1;
 		philo[index].global = global;
-		pthread_mutex_init(&philo[i].fork, NULL);
+		pthread_mutex_init(&philo[index].fork, NULL);
 		pthread_create(&philo[index].thread, NULL, &routine, &philo[index]);
 		index++;
 		i--;

@@ -6,7 +6,7 @@
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 16:46:54 by zel-kass          #+#    #+#             */
-/*   Updated: 2023/03/11 18:20:47 by zel-kass         ###   ########.fr       */
+/*   Updated: 2023/03/13 13:37:31 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void		*routine(void *ptr);
 //# 						UTILS						#//
 //#######################################################//
 
-void	print_status(t_philo *philo, char *str);
+void		print_status(t_philo *philo, char *str);
+void		clean_exit(char *str, void *ptr);
 
 #endif
