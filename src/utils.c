@@ -6,7 +6,7 @@
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 15:32:11 by zel-kass          #+#    #+#             */
-/*   Updated: 2023/03/13 13:37:45 by zel-kass         ###   ########.fr       */
+/*   Updated: 2023/03/13 17:27:50 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,15 @@ void	clean_exit(char *str, void *ptr)
 	exit(EXIT_FAILURE);
 }
 
-long	timer(void)
+time_t	timer(void)
 {
 	struct timeval	time;
-	long			current;
+	time_t			current;
 	
 	gettimeofday(&time, NULL);
 	current = time.tv_sec * 1000 + time.tv_usec / 1000;
 	return (current);
 }
-
-// int	has_eaten(t_philo *philo)
-// {
-// 	long	time;
-	
-// 	time = timer();
-// 	if (philo->global->eat)
-// }
 
 void	print_status(t_philo *philo, char *str)
 {

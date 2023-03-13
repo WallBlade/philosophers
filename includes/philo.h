@@ -6,7 +6,7 @@
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 16:46:54 by zel-kass          #+#    #+#             */
-/*   Updated: 2023/03/13 13:37:31 by zel-kass         ###   ########.fr       */
+/*   Updated: 2023/03/13 17:21:39 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_global
 	long			eat;
 	long			sleep;
 	long			meals;
+	time_t			start;
 	pthread_mutex_t	msg;
 }			t_global;
 
@@ -36,6 +37,8 @@ typedef struct s_philo
 	t_global		*global;
 	pthread_mutex_t	fork;
 	pthread_t		thread;
+	struct s_philo	*next;
+	struct s_philo	*prev;
 }			t_philo;
 
 //#######################################################//
@@ -69,5 +72,6 @@ void		*routine(void *ptr);
 
 void		print_status(t_philo *philo, char *str);
 void		clean_exit(char *str, void *ptr);
+time_t		timer(void);
 
 #endif

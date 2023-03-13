@@ -22,12 +22,14 @@ void	take_fork(t_philo *philo)
 		pthread_mutex_lock(&philo->fork);
 		pthread_mutex_lock(&philo[i + 1].fork);
 		print_status(philo, "has taken a fork");
+		print_status(philo, "has taken a fork");
 		eating(philo);
 	}
 	else if (i % 3 && !philo->has_eaten)
 	{
 		pthread_mutex_lock(&philo->fork);
 		pthread_mutex_lock(&philo[i - 1].fork);
+		print_status(philo, "has taken a fork");
 		print_status(philo, "has taken a fork");
 		eating(philo);
 	}
@@ -64,6 +66,8 @@ void	thinking(t_philo *philo)
 {
 	print_status(philo, "is thinking");
 	usleep(philo->global->die);
+	if (is_dead(philo))
+		return (0);
 }
 
 void	*routine(void *ptr)
@@ -72,10 +76,7 @@ void	*routine(void *ptr)
 
 	philo = ptr;
 	if (philo->id % 2)
-	{
-		printf("id = %d\n", philo->id);
 		usleep(200);
-	}
 	while (1)
 	{
 		take_fork(philo);

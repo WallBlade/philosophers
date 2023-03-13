@@ -22,9 +22,10 @@ t_global	*get_global(char **argv)
 	global->count = ft_atol(argv[1]);
 	if (global->count < 1)
 		clean_exit("No one's arround the table\n", global);
-	global->die = ft_atol(argv[2]);
-	global->eat = ft_atol(argv[3]);
-	global->sleep = ft_atol(argv[4]);
+	global->start = (time_t)timer;
+	global->die = ft_atol(argv[2]) * 1000;
+	global->eat = ft_atol(argv[3]) * 1000;
+	global->sleep = ft_atol(argv[4]) * 1000;
 	pthread_mutex_init(&global->msg, NULL);
 	if (argv[5])
 		global->meals = ft_atol(argv[5]);
