@@ -6,7 +6,7 @@
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 15:32:11 by zel-kass          #+#    #+#             */
-/*   Updated: 2023/03/14 17:31:49 by zel-kass         ###   ########.fr       */
+/*   Updated: 2023/03/15 18:37:30 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,14 @@ int	state(t_philo philo)
 	time_t	now;
 
 	now = timer();
-	if (now - philo.last_meal >= philo.global->die)
+	pthread_mutex_lock(&philo.eat);
+	if (now - philo.last_meal >= philo.global->die / 1000)
 	{
-		print_status(&philo, "is dead");
+		print_status(&philo, "died");
+		pthread_mutex_unlock(&philo.eat);
 		return (DEATH);
 	}
+	pthread_mutex_unlock(&philo.eat);
 	return (ALIVE);
 }
 
@@ -52,7 +55,7 @@ int	print_status(t_philo *philo, char *str)
 		pthread_mutex_unlock(&philo->global->death);
 		return (DEATH);
 	}
-	printf("philo %d ", philo->id);
+	printf("%ld %d ", timer() - philo->global->start, philo->id);
 	printf("%s\n", str);
 	pthread_mutex_unlock(&philo->global->msg);
 	pthread_mutex_unlock(&philo->global->death);

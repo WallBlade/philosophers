@@ -52,6 +52,7 @@ t_philo	*init_philo(t_global *global)
 		philo[index].id = index + 1;
 		philo[index].meals = 0;
 		philo[index].global = global;
+		philo[index].last_meal = timer();
 		pthread_mutex_init(&philo[index].fork, NULL);
 		pthread_mutex_init(&philo[index].eat, NULL);
 		pthread_create(&philo[index].thread, NULL, &routine, &philo[index]);

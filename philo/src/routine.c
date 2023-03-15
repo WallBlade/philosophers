@@ -17,15 +17,28 @@ int	take_fork(t_philo *philo)
 	int	i;
 
 	i = philo->id;
+	pthread_mutex_lock(&philo[i].fork);
 	if (print_status(philo, "has taken a fork") == DEATH)
+	{
+		dprintf(2, "COUCOU1\n");
+		pthread_mutex_unlock(&philo[i].fork);
 		return (DEATH);
-	pthread_mutex_lock(&philo->fork);
-	if (i % 2 && !philo->has_eaten)
+	}
+	if (i % 2)
 		pthread_mutex_lock(&philo[i + 1].fork);
-	else if (i % 3 && !philo->has_eaten)
+	else if (i % 3)
 		pthread_mutex_lock(&philo[i - 1].fork);
 	print_status(philo, "has taken a fork");
-	eating(philo);
+	if (eating(philo) == DEATH)
+	{
+		dprintf(2, "COUCOU2\n");
+		pthread_mutex_unlock(&philo[i].fork);
+		if (i % 2)
+			pthread_mutex_unlock(&philo[i + 1].fork);
+		else if (i % 3)
+			pthread_mutex_unlock(&philo[i - 1].fork);
+		return (DEATH);
+	}
 	return (ALIVE);
 }
 
@@ -34,15 +47,20 @@ int	eating(t_philo *philo)
 	int	i;
 
 	i = philo->id;
+	pthread_mutex_lock(&philo->eat);
+	philo->last_meal = timer();
+	pthread_mutex_unlock(&philo->eat);
 	if (print_status(philo, "is eating") == DEATH)
+	{
+		dprintf(2, "COUCOU3\n");
 		return (DEATH);
+	}
 	usleep(philo->global->eat);
-	pthread_mutex_unlock(&philo->fork);
+	pthread_mutex_unlock(&philo[i].fork);
 	if (i % 2)
 		pthread_mutex_unlock(&philo[i + 1].fork);
 	else if (i % 3)
 		pthread_mutex_unlock(&philo[i - 1].fork);
-	philo->has_eaten = 1;
 	return (ALIVE);
 }
 
@@ -51,7 +69,6 @@ int	sleeping(t_philo *philo)
 	if (print_status(philo, "is sleeping") == DEATH)
 		return (DEATH);
 	usleep(philo->global->sleep);
-	philo->has_eaten = 0;
 	return (ALIVE);
 }
 
@@ -68,7 +85,7 @@ void	*routine(void *ptr)
 
 	philo = ptr;
 	if (philo->id % 2)
-		usleep(200);
+		usleep(philo->global->eat / 2);
 	while (1)
 	{
 		if (take_fork(philo) == DEATH)

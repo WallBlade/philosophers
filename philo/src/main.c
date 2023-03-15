@@ -6,7 +6,7 @@
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 16:42:33 by zel-kass          #+#    #+#             */
-/*   Updated: 2023/03/14 17:24:15 by zel-kass         ###   ########.fr       */
+/*   Updated: 2023/03/15 15:03:21 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,9 @@ void	waitforme(t_philo *philo, int count)
 {
 	int	i;
 
-	i = 0;
-	while (i < count)
-	{
+	i = -1;
+	while (++i < count)
 		pthread_join(philo[i].thread, NULL);
-		i++;
-	}
 }
 
 void	diner(char **argv)
@@ -33,8 +30,8 @@ void	diner(char **argv)
 	global = get_global(argv);
 	philo = init_philo(global);
 	pthread_create(&global->manager, NULL, &manager, philo);
-	waitforme(philo, global->count);
 	pthread_join(global->manager, NULL);
+	waitforme(philo, global->count);
 	destroy_everything(philo, global);
 }
 

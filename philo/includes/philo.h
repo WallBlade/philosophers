@@ -6,7 +6,7 @@
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 16:46:54 by zel-kass          #+#    #+#             */
-/*   Updated: 2023/03/14 17:30:44 by zel-kass         ###   ########.fr       */
+/*   Updated: 2023/03/15 18:37:32 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ typedef struct s_philo
 {
 	int				id;
 	int				meals;
-	int				has_eaten;
 	time_t			last_meal;
 	t_global		*global;
 	pthread_t		thread;

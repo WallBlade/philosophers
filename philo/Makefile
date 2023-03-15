@@ -5,7 +5,7 @@ OBJ		=	$(SRCS:.c=.o)
 
 CC		=	@cc
 RM		=	@rm -rf
-CFLAGS	=	-Wall -Werror -Wextra -I./includes
+CFLAGS	=	-Wall -Werror -Wextra -g3 -I./includes
 
 NAME	=	philo
 
