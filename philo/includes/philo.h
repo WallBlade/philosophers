@@ -6,7 +6,7 @@
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 16:46:54 by zel-kass          #+#    #+#             */
-/*   Updated: 2023/03/15 18:37:32 by zel-kass         ###   ########.fr       */
+/*   Updated: 2023/03/16 15:28:08 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,13 @@ typedef struct s_global
 	long			die;
 	long			eat;
 	long			sleep;
+	long			think;
 	long			round;
 	int				is_dead;
 	time_t			start;
-	pthread_t		manager;
-	pthread_mutex_t	death;
 	pthread_mutex_t	msg;
+	pthread_mutex_t	meal;
+	pthread_mutex_t	death;
 }			t_global;
 
 typedef struct s_philo
@@ -44,7 +45,9 @@ typedef struct s_philo
 	time_t			last_meal;
 	t_global		*global;
 	pthread_t		thread;
-	pthread_mutex_t	fork;
+	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	lock;
 	pthread_mutex_t	eat;
 }			t_philo;
 
@@ -77,7 +80,7 @@ void		*routine(void *ptr);
 //# 					  MONITORING					#//
 //#######################################################//
 
-void		*manager(void *ptr);
+void		*manager(t_philo *philo, int count);
 
 //#######################################################//
 //# 						UTILS						#//

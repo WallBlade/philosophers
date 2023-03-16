@@ -6,7 +6,7 @@
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 16:42:33 by zel-kass          #+#    #+#             */
-/*   Updated: 2023/03/15 15:03:21 by zel-kass         ###   ########.fr       */
+/*   Updated: 2023/03/16 16:06:49 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ void	diner(char **argv)
 	t_global	*global;
 	t_philo		*philo;
 
-	check_args(argv);
+	if (!check_args(argv))
+		return ;
 	global = get_global(argv);
 	philo = init_philo(global);
-	pthread_create(&global->manager, NULL, &manager, philo);
-	pthread_join(global->manager, NULL);
+	manager(philo, global->count);
 	waitforme(philo, global->count);
 	destroy_everything(philo, global);
 }

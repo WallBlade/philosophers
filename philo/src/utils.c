@@ -6,7 +6,7 @@
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 15:32:11 by zel-kass          #+#    #+#             */
-/*   Updated: 2023/03/15 18:37:30 by zel-kass         ###   ########.fr       */
+/*   Updated: 2023/03/16 15:32:05 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,12 @@ int	state(t_philo philo)
 {
 	time_t	now;
 
-	now = timer();
-	pthread_mutex_lock(&philo.eat);
-	if (now - philo.last_meal >= philo.global->die / 1000)
+	now = timer()- philo.last_meal;
+	if (now >= philo.global->die / 1000)
 	{
 		print_status(&philo, "died");
-		pthread_mutex_unlock(&philo.eat);
 		return (DEATH);
 	}
-	pthread_mutex_unlock(&philo.eat);
 	return (ALIVE);
 }
 
@@ -47,18 +44,17 @@ time_t	timer(void)
 
 int	print_status(t_philo *philo, char *str)
 {
-	pthread_mutex_lock(&philo->global->msg);
 	pthread_mutex_lock(&philo->global->death);
 	if (philo->global->is_dead == DEATH)
 	{
-		pthread_mutex_unlock(&philo->global->msg);
 		pthread_mutex_unlock(&philo->global->death);
 		return (DEATH);
 	}
-	printf("%ld %d ", timer() - philo->global->start, philo->id);
+	pthread_mutex_unlock(&philo->global->death);
+	pthread_mutex_lock(&philo->global->msg);
+	printf("%ld %d ", timer() - philo->global->start, philo->id + 1);
 	printf("%s\n", str);
 	pthread_mutex_unlock(&philo->global->msg);
-	pthread_mutex_unlock(&philo->global->death);
 	return (ALIVE);
 }
 
@@ -69,7 +65,7 @@ void	destroy_everything(t_philo *philo, t_global *global)
 	i = 0;
 	while (i < global->count)
 	{
-		pthread_mutex_destroy(&philo[i].fork);
+		pthread_mutex_destroy(philo[i].left_fork);
 		pthread_mutex_destroy(&philo[i].eat);
 		i++;
 	}

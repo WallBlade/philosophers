@@ -12,55 +12,56 @@
 
 #include "philo.h"
 
-int	take_fork(t_philo *philo)
+int	even_fork(t_philo *philo)
 {
-	int	i;
-
-	i = philo->id;
-	pthread_mutex_lock(&philo[i].fork);
+	pthread_mutex_lock(philo->left_fork);
 	if (print_status(philo, "has taken a fork") == DEATH)
 	{
-		dprintf(2, "COUCOU1\n");
-		pthread_mutex_unlock(&philo[i].fork);
+		pthread_mutex_unlock(philo->left_fork);
 		return (DEATH);
 	}
-	if (i % 2)
-		pthread_mutex_lock(&philo[i + 1].fork);
-	else if (i % 3)
-		pthread_mutex_lock(&philo[i - 1].fork);
-	print_status(philo, "has taken a fork");
-	if (eating(philo) == DEATH)
+	pthread_mutex_lock(philo->right_fork);
+	if (print_status(philo, "has taken a fork") == DEATH)
 	{
-		dprintf(2, "COUCOU2\n");
-		pthread_mutex_unlock(&philo[i].fork);
-		if (i % 2)
-			pthread_mutex_unlock(&philo[i + 1].fork);
-		else if (i % 3)
-			pthread_mutex_unlock(&philo[i - 1].fork);
+		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(philo->left_fork);
 		return (DEATH);
 	}
 	return (ALIVE);
 }
 
+int	odd_fork(t_philo *philo)
+{
+	pthread_mutex_lock(philo->right_fork);
+	if (print_status(philo, "has taken a fork") == DEATH)
+	{
+		pthread_mutex_unlock(philo->right_fork);
+		return (DEATH);
+	}
+	pthread_mutex_lock(philo->left_fork);
+	if (print_status(philo, "has taken a fork") == DEATH)
+	{
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
+		return (DEATH);
+	}
+	return (ALIVE);
+}
+
+
 int	eating(t_philo *philo)
 {
-	int	i;
-
-	i = philo->id;
 	pthread_mutex_lock(&philo->eat);
 	philo->last_meal = timer();
 	pthread_mutex_unlock(&philo->eat);
 	if (print_status(philo, "is eating") == DEATH)
 	{
-		dprintf(2, "COUCOU3\n");
-		return (DEATH);
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
 	}
 	usleep(philo->global->eat);
-	pthread_mutex_unlock(&philo[i].fork);
-	if (i % 2)
-		pthread_mutex_unlock(&philo[i + 1].fork);
-	else if (i % 3)
-		pthread_mutex_unlock(&philo[i - 1].fork);
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
 	return (ALIVE);
 }
 
@@ -84,11 +85,21 @@ void	*routine(void *ptr)
 	t_philo	*philo;
 
 	philo = ptr;
-	if (philo->id % 2)
+	if (philo->id % 2 == 0)
 		usleep(philo->global->eat / 2);
 	while (1)
 	{
-		if (take_fork(philo) == DEATH)
+		if (philo->id % 2 == 0)
+		{
+			if (even_fork(philo) == DEATH)
+				break ;
+		}
+		else
+		{
+			if (odd_fork(philo) == DEATH)
+				break ;
+		}
+		if (eating(philo) == DEATH)
 			break ;
 		if (sleeping(philo) == DEATH)
 			break ;
