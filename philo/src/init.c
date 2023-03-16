@@ -26,7 +26,7 @@ t_global	*get_global(char **argv)
 	global->die = ft_atol(argv[2]) * 1000;
 	global->eat = ft_atol(argv[3]) * 1000;
 	global->sleep = ft_atol(argv[4]) * 1000;
-	global->think = global->die - (global->eat + global->sleep) / 2;
+	global->think = (global->eat - global->sleep);
 	if (global->think <= 0)
 		global->think = 0;
 	global->is_dead = 1;

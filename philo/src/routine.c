@@ -75,6 +75,11 @@ int	sleeping(t_philo *philo)
 
 int	thinking(t_philo *philo)
 {
+	if (philo->id % 2 == 1)
+	{
+		usleep((philo->global->eat - philo->global->sleep) * ((philo->global->eat - philo->global->sleep) > 0));
+		usleep(500);
+	}
 	if (print_status(philo, "is thinking") == DEATH)
 		return (DEATH);
 	return (ALIVE);
