@@ -70,11 +70,6 @@ int	sleeping(t_philo *philo)
 	if (print_status(philo, "is sleeping") == DEATH)
 		return (DEATH);
 	usleep(philo->global->sleep);
-	return (ALIVE);
-}
-
-int	thinking(t_philo *philo)
-{
 	if (philo->id % 2 == 1)
 	{
 		usleep((philo->global->eat - philo->global->sleep) * ((philo->global->eat - philo->global->sleep) > 0));
@@ -107,8 +102,6 @@ void	*routine(void *ptr)
 		if (eating(philo) == DEATH)
 			break ;
 		if (sleeping(philo) == DEATH)
-			break ;
-		if (thinking(philo) == DEATH)
 			break ;
 	}
 	return (NULL);

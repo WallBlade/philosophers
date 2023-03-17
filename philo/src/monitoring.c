@@ -6,7 +6,7 @@
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 10:52:41 by zel-kass          #+#    #+#             */
-/*   Updated: 2023/03/16 15:32:36 by zel-kass         ###   ########.fr       */
+/*   Updated: 2023/03/17 18:54:29 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	*manager(t_philo *philo, int count)
 			pthread_mutex_unlock(&philo[i].lock);
 			i++;
 		}
-		usleep(500);
+		usleep(1000);
 	}
 	return (NULL);
 }

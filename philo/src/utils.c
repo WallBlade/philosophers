@@ -6,7 +6,7 @@
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 15:32:11 by zel-kass          #+#    #+#             */
-/*   Updated: 2023/03/16 15:32:05 by zel-kass         ###   ########.fr       */
+/*   Updated: 2023/03/17 18:56:43 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ time_t	timer(void)
 
 int	print_status(t_philo *philo, char *str)
 {
+	printf("test\n");
 	pthread_mutex_lock(&philo->global->death);
 	if (philo->global->is_dead == DEATH)
 	{
@@ -66,6 +67,7 @@ void	destroy_everything(t_philo *philo, t_global *global)
 	while (i < global->count)
 	{
 		pthread_mutex_destroy(philo[i].left_fork);
+		free(philo[i].left_fork);
 		pthread_mutex_destroy(&philo[i].eat);
 		i++;
 	}
