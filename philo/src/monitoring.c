@@ -6,7 +6,7 @@
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 10:52:41 by zel-kass          #+#    #+#             */
-/*   Updated: 2023/03/18 16:18:10 by zel-kass         ###   ########.fr       */
+/*   Updated: 2023/03/18 21:44:59 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,41 +47,58 @@ int	runner(t_philo *philo, int count)
 	return (ALIVE);
 }
 
-int	everyone_ate(t_philo *philo, int count)
+int	check_end(t_philo *philo, int res, int count)
 {
-	int	i;
-	int	round;
-
-	i = 0;
-	round = 0;
-	while (i < count)
+	if (res == count)
 	{
-		pthread_mutex_lock(&philo[i].meal);
-		if (philo[i].meals == philo->global->round)
-			round++;
-		pthread_mutex_unlock(&philo[i].meal);
-		i++;
-	}
-	if (round == philo->global->count - 1)
+		pthread_mutex_lock(&philo->global->end);
+		philo->global->round = FINISH;
+		pthread_mutex_unlock(&philo->global->end);
 		return (DEATH);
+	}
 	return (ALIVE);
 }
 
-void	*manager(t_philo *philo, int count)
+int	everyone_ate(t_philo *philo, int count)
 {
-	int		hungry_mode;
+	int	i;
+	int	res;
+	int	round;
+	int	meals;
 
-	hungry_mode = philo->global->god_mode;
+	i = 0;
+	res = 0;
+	pthread_mutex_lock(&philo[i].meal);
+	round = philo[i].meals;
+	pthread_mutex_unlock(&philo[i].meal);
+	meals = round;
+	while (i < count)
+	{
+		if (round == philo->global->round)
+		{
+			if (meals == round)
+				res++;
+			pthread_mutex_lock(&philo[i].meal);
+			meals = philo[i].meals;
+			pthread_mutex_unlock(&philo[i].meal);
+		}
+		i++;
+	}
+	return (check_end(philo, res, count));
+}
+
+void	*manager(t_philo *philo, int count, int mode)
+{
 	while (1)
 	{
 		if (runner(philo, count) == DEATH)
 			return (NULL);
-		if (hungry_mode == 1)
+		if (mode == 1)
 		{
 			if (everyone_ate(philo, count) == DEATH)
 				return (NULL);
 		}
-		usleep(1000);
+		sleep_like_a_baby(1000);
 	}
 	return (NULL);
 }

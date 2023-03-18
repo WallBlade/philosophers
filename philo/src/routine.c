@@ -59,7 +59,7 @@ int	eating(t_philo *philo)
 		pthread_mutex_unlock(philo->right_fork);
 		return (DEATH);
 	}
-	usleep(philo->t_eat);
+	sleep_like_a_baby(philo->t_eat);
 	pthread_mutex_lock(&philo->meal);
 	philo->meals += 1;
 	pthread_mutex_unlock(&philo->meal);
@@ -72,15 +72,12 @@ int	sleeping(t_philo *philo)
 {
 	if (print_status(philo, "is sleeping") == DEATH)
 		return (DEATH);
-	usleep(philo->t_sleep);
-	if (philo->id % 2 == 1)
-	{
-		usleep((philo->t_eat - philo->t_sleep)
-			* ((philo->t_eat - philo->t_sleep) > 0));
-		usleep(500);
-	}
+	sleep_like_a_baby(philo->t_sleep);
 	if (print_status(philo, "is thinking") == DEATH)
 		return (DEATH);
+	sleep_like_a_baby((philo->t_eat - philo->t_sleep)
+		* ((philo->t_eat - philo->t_sleep) > 0));
+	sleep_like_a_baby(1500);
 	return (ALIVE);
 }
 
@@ -90,7 +87,7 @@ void	*routine(void *ptr)
 
 	philo = ptr;
 	if (philo->id % 2 == 0)
-		usleep(philo->t_eat / 2);
+		sleep_like_a_baby(philo->t_eat / 2);
 	while (1)
 	{
 		if (philo->id % 2 == 0)

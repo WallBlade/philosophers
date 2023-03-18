@@ -6,7 +6,7 @@
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 16:42:33 by zel-kass          #+#    #+#             */
-/*   Updated: 2023/03/18 16:21:07 by zel-kass         ###   ########.fr       */
+/*   Updated: 2023/03/18 20:19:55 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	wokeupinthemiddleofthenight(char **argv)
 	else
 	{
 		philo = init_philo(global);
-		manager(philo, global->count);
+		manager(philo, global->count, global->mode);
 		waitforme(philo, global->count);
 		destroy_everything(philo, global);
 	}

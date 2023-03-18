@@ -27,12 +27,14 @@ t_global	*get_global(char **argv)
 	global->eat = ft_atol(argv[3]) * 1000;
 	global->sleep = ft_atol(argv[4]) * 1000;
 	global->is_dead = 1;
+	global->mode = 0;
 	pthread_mutex_init(&global->msg, NULL);
+	pthread_mutex_init(&global->end, NULL);
 	pthread_mutex_init(&global->death, NULL);
 	if (argv[5])
 	{
 		global->round = ft_atol(argv[5]);
-		global->god_mode = 1;
+		global->mode = 1;
 	}
 	else
 		global->round = 0;
