@@ -6,7 +6,7 @@
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 15:32:11 by zel-kass          #+#    #+#             */
-/*   Updated: 2023/03/17 18:56:43 by zel-kass         ###   ########.fr       */
+/*   Updated: 2023/03/18 15:34:01 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,6 @@ void	clean_exit(char *str, void *ptr)
 	printf("%s", str);
 	free(ptr);
 	exit(EXIT_FAILURE);
-}
-
-int	state(t_philo philo)
-{
-	time_t	now;
-
-	now = timer()- philo.last_meal;
-	if (now >= philo.global->die / 1000)
-	{
-		print_status(&philo, "died");
-		return (DEATH);
-	}
-	return (ALIVE);
 }
 
 time_t	timer(void)
@@ -44,7 +31,6 @@ time_t	timer(void)
 
 int	print_status(t_philo *philo, char *str)
 {
-	printf("test\n");
 	pthread_mutex_lock(&philo->global->death);
 	if (philo->global->is_dead == DEATH)
 	{
@@ -52,9 +38,10 @@ int	print_status(t_philo *philo, char *str)
 		return (DEATH);
 	}
 	pthread_mutex_unlock(&philo->global->death);
+	if (philo->global->round == ERROR)
+		return (DEATH);
 	pthread_mutex_lock(&philo->global->msg);
-	printf("%ld %d ", timer() - philo->global->start, philo->id + 1);
-	printf("%s\n", str);
+	printf("%ld %d %s\n", timer() - philo->global->start, philo->id + 1, str);
 	pthread_mutex_unlock(&philo->global->msg);
 	return (ALIVE);
 }

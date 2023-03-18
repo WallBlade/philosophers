@@ -6,7 +6,7 @@
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 16:42:33 by zel-kass          #+#    #+#             */
-/*   Updated: 2023/03/17 19:01:30 by zel-kass         ###   ########.fr       */
+/*   Updated: 2023/03/18 16:21:07 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ void	*akon(void *ptr)
 	t_philo	*philo;
 
 	philo = ptr;
-	printf("%ld %d has taken a fork\n", timer() - philo->global->start, philo->id);
+	printf("%ld %d has taken a fork\n", timer()
+		- philo->global->start, philo->id);
 	usleep(philo->global->die);
 	printf("%ld %d died\n", timer() - philo->global->start, philo->id);
 	return (NULL);
@@ -44,8 +45,8 @@ void	lonely(t_global *global, t_philo *philo)
 	pthread_create(&philo->thread, NULL, &akon, philo);
 	pthread_join(philo->thread, NULL);
 	free(philo);
-	pthread_mutex_destroy(&philo->global->death);
-	pthread_mutex_destroy(&philo->global->msg);
+	pthread_mutex_destroy(&global->death);
+	pthread_mutex_destroy(&global->msg);
 	free(global);
 }
 

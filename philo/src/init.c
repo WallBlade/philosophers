@@ -26,15 +26,14 @@ t_global	*get_global(char **argv)
 	global->die = ft_atol(argv[2]) * 1000;
 	global->eat = ft_atol(argv[3]) * 1000;
 	global->sleep = ft_atol(argv[4]) * 1000;
-	global->think = (global->eat - global->sleep);
-	if (global->think <= 0)
-		global->think = 0;
 	global->is_dead = 1;
 	pthread_mutex_init(&global->msg, NULL);
-	pthread_mutex_init(&global->meal, NULL);
 	pthread_mutex_init(&global->death, NULL);
 	if (argv[5])
+	{
 		global->round = ft_atol(argv[5]);
+		global->god_mode = 1;
+	}
 	else
 		global->round = 0;
 	return (global);
@@ -60,9 +59,11 @@ void	init_mutex(t_philo *philo, int count)
 	while (i < count)
 	{
 		philo[i].left_fork = malloc(sizeof(pthread_mutex_t));
+		if (!philo[i].left_fork)
+			return ;
 		pthread_mutex_init(philo[i].left_fork, NULL);
 		pthread_mutex_init(&philo[i].eat, NULL);
-		pthread_mutex_init(&philo[i].lock, NULL);
+		pthread_mutex_init(&philo[i].meal, NULL);
 		i++;
 	}
 }
@@ -74,9 +75,12 @@ void	connect_mutex(t_philo *philo, int count)
 	i = 0;
 	while (i < count)
 	{
-		philo[i].right_fork = philo[i + 1].left_fork;
 		if (i == count - 1)
+		{
 			philo[i].right_fork = philo[0].left_fork;
+			break ;
+		}
+		philo[i].right_fork = philo[i + 1].left_fork;
 		i++;
 	}
 }
@@ -97,6 +101,9 @@ t_philo	*init_philo(t_global *global)
 		philo[i].id = i;
 		philo[i].meals = 0;
 		philo[i].global = global;
+		philo[i].t_die = global->die;
+		philo[i].t_eat = global->eat;
+		philo[i].t_sleep = global->sleep;
 		philo[i].last_meal = timer();
 		i++;
 	}

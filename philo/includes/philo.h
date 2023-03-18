@@ -6,7 +6,7 @@
 /*   By: zel-kass <zel-kass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 16:46:54 by zel-kass          #+#    #+#             */
-/*   Updated: 2023/03/16 15:28:08 by zel-kass         ###   ########.fr       */
+/*   Updated: 2023/03/18 15:43:41 by zel-kass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,11 @@ typedef struct s_global
 	long			die;
 	long			eat;
 	long			sleep;
-	long			think;
 	long			round;
 	int				is_dead;
+	int				god_mode;
 	time_t			start;
 	pthread_mutex_t	msg;
-	pthread_mutex_t	meal;
 	pthread_mutex_t	death;
 }			t_global;
 
@@ -42,13 +41,16 @@ typedef struct s_philo
 {
 	int				id;
 	int				meals;
+	long			t_die;
+	long			t_eat;
+	long			t_sleep;
 	time_t			last_meal;
 	t_global		*global;
 	pthread_t		thread;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*left_fork;
-	pthread_mutex_t	lock;
 	pthread_mutex_t	eat;
+	pthread_mutex_t	meal;
 }			t_philo;
 
 //#######################################################//
@@ -80,6 +82,7 @@ void		*routine(void *ptr);
 //# 					  MONITORING					#//
 //#######################################################//
 
+int			state(time_t last_meal, t_philo *philo);
 void		*manager(t_philo *philo, int count);
 
 //#######################################################//
@@ -87,7 +90,6 @@ void		*manager(t_philo *philo, int count);
 //#######################################################//
 
 void		clean_exit(char *str, void *ptr);
-int			state(t_philo philo);
 time_t		timer(void);
 int			print_status(t_philo *philo, char *str);
 void		destroy_everything(t_philo *philo, t_global *global);
